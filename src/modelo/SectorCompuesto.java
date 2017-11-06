@@ -10,8 +10,12 @@ import modelo.productoElemento.Producto;
 
 public	 class SectorCompuesto extends Sector {
 	
+
 	private List<Sector> sectores = new ArrayList<Sector>();
 
+	public SectorCompuesto(String nombre) {
+		super(nombre);
+	}
 	
 	public void agregarSector(Sector sector) {
 		this.getSectores().add(sector);
@@ -54,6 +58,7 @@ public	 class SectorCompuesto extends Sector {
 	public void setSectores(List<Sector> sectores) {
 		this.sectores = sectores;
 	}
+
 
 
 
