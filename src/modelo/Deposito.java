@@ -16,6 +16,8 @@ public class Deposito {
 	private static Deposito store = new Deposito();
 	// atributo
 	private List<Sector> sectores = new ArrayList<Sector>();
+	
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	// constructor
 	public static Deposito store() {
@@ -115,6 +117,10 @@ public class Deposito {
 		return this.getSectores().stream().map(s -> s.totalDeSectores()).flatMap(l -> l.stream())
 				.collect(Collectors.toList());
 	}
+	
+	public void agregarPedido(Pedido pedido) {
+		this.getPedidos().add(pedido);
+	}
 
 	// setters & getters
 	public List<Sector> getSectores() {
@@ -123,5 +129,13 @@ public class Deposito {
 
 	public void setSectores(List<Sector> sectores) {
 		this.sectores = sectores;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 }

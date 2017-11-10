@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelo.Cepas;
+import modelo.EnvoltoriosCierres.Cinta;
+import modelo.EnvoltoriosCierres.FilmAlveolar;
 
 public class Vino extends Producto {
 	// atributos
@@ -15,11 +17,28 @@ public class Vino extends Producto {
 		super(peso, costo, precioDeVenta);
 		this.setBodega(bodega);
 	}
+
 	// metodos
 	public void agregarCepa(Cepas cepa) {
 		this.getCepas().add(cepa);
 	}
 
+	@Override
+	public void agregarEnvoltorio() {
+		this.getEnvoltorios().add(new FilmAlveolar());
+
+	}
+
+	@Override
+	public void agregarCierres() {
+		if (this.getPeso() <= 1) {
+			this.getCierres().add(new Cinta());
+		} else {
+			this.getCierres().add(new Cinta());
+			this.getCierres().add(new Cinta());
+		}
+
+	}
 
 	@Override
 	public boolean fueEscritoPor(String autor) {

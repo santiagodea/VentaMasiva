@@ -24,10 +24,6 @@ public abstract class Elemento {
 		return (this.getProducto().equals(unProducto));
 	}	
 	public abstract Producto getProducto();
-
-	public abstract void agregarEnvoltorio();
-
-	public abstract void agregarCierre();
 	
 	//getter
 	public Integer getNroInventario() {

@@ -15,16 +15,27 @@ import modelo.productoElemento.Libro;
 import modelo.productoElemento.Vino;
 
 public class test1 {
+	SectorCompuesto SCA = new SectorCompuesto("sector A");
+	SectorCompuesto SCB = new SectorCompuesto("sector B");
+	SectorCompuesto SCC = new SectorCompuesto("sector C");
+	SectorSimple S1 = new SectorSimple("sector 1");
+	SectorSimple S2 = new SectorSimple("sector 2");
+	SectorSimple S3 = new SectorSimple("sector 3");
+	
+	Vino vino1 = new Vino(30, 150, 200, "los Robles");
+	// (double peso, double costo, double precioDeVenta, String bodega)
+	Libro libro1 = new Libro("el libro de juan y pedro", 120, 100, 150, 30, 15, 5);
+	
+	Botella botella1 = new Botella(vino1);
+	Botella botella2 = new Botella(vino1);
 
+	Ejemplar ejemplar1 = new Ejemplar(libro1);
+	Ejemplar ejemplar2 = new Ejemplar(libro1);
+	
 	@Test
 	public void test() {
 
-		SectorCompuesto SCA = new SectorCompuesto("sector A");
-		SectorCompuesto SCB = new SectorCompuesto("sector B");
-		SectorCompuesto SCC = new SectorCompuesto("sector C");
-		SectorSimple S1 = new SectorSimple("sector 1");
-		SectorSimple S2 = new SectorSimple("sector 2");
-		SectorSimple S3 = new SectorSimple("sector 3");
+		
 
 		SCA.agregarSector(SCB);
 		SCA.agregarSector(SCC);
@@ -32,25 +43,21 @@ public class test1 {
 		SCB.agregarSector(S2);
 		SCC.agregarSector(S3);
 
-		Vino vino1 = new Vino(30, 150, 200, "los Robles");
-		// (double peso, double costo, double precioDeVenta, String bodega)
+		
 		vino1.agregarCepa(Cepas.MALBEC);
-		Libro libro1 = new Libro("el libro de juan y pedro", 120, 100, 150, 30, 15, 5);
+		
 		libro1.agregarAutor("juan");
 		libro1.agregarAutor("pedro");
 		// (double peso, double costo, double precioDeVenta, int alto, int ancho, int
 		// espesor)
 
-		Botella botella1 = new Botella(vino1);
-		Botella botella2 = new Botella(vino1);
-
-		Ejemplar ejemplar1 = new Ejemplar(libro1);
-		Ejemplar ejemplar2 = new Ejemplar(libro1);
+		
 
 		Deposito.store().agregarSector(SCA);
 
 		// ejer 01
 		S1.agregarBotella(botella1);
+		S1.agregarBotella(botella2);
 		System.out.println("elemento agregado con nro de inventario: ");
 		System.out.println(botella1.getNroInventario());
 		// ejer 02
@@ -101,8 +108,34 @@ public class test1 {
 		unpedido.agregarProducto(vino1);
 		unpedido.crearEnvio();
 		assertEquals(150,unpedido.getEnvio().pesoTotal(),0);	//pesos: 30 + 120
+		Deposito.store().agregarPedido(unpedido);
+		System.out.println("cantidad de envoltorios para Envio para el pedido");
+		System.out.println(unpedido.getEnvio().getEnvoltorios().size());
+		System.out.println("cantidad de cierres para el envio del pedido");
+		System.out.println(unpedido.getEnvio().getCierres().size());
 		
+
+	}
+	
+	@Test (expected = RuntimeException.class)
+	public void testaddduplicateSocialWork() {
+		SCA.agregarSector(SCB);
+		SCA.agregarSector(SCC);
+		SCB.agregarSector(S1);
+		SCB.agregarSector(S2);
+		SCC.agregarSector(S3);
+		vino1.agregarCepa(Cepas.MALBEC);
+		libro1.agregarAutor("juan");
+		libro1.agregarAutor("pedro");
+		S1.agregarBotella(botella1);
+		S1.agregarBotella(botella2);
+		S1.agregarEjemplar(ejemplar1);
+		S1.agregarEjemplar(ejemplar2);
+
+		Deposito.store().agregarSector(SCA);
+		Pedido pedidodos = new Pedido("juan");
+		pedidodos.agregarProducto(new Vino(10, 20, 30, "mendoza"));
+		pedidodos.crearEnvio();
 		
 	}
-
 }

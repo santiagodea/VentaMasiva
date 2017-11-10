@@ -13,8 +13,8 @@ public class Pedido {
 	private String cliente;
 	private LocalDate fechaDelPedido;
 	private Envio envio;
-
 	private List<Producto> productos = new ArrayList<>();
+	
 	//constructor
 	public Pedido(String cliente) {
 		this.setCliente(cliente);
@@ -36,6 +36,7 @@ public class Pedido {
 	
 	public void agregarProducto(Producto producto) {
 		this.getProductos().add(producto);
+		
 	}
 
 	private void agregarElementos() {
@@ -45,8 +46,8 @@ public class Pedido {
 	private void agregarUnelemento(Producto producto) {
 		Elemento elemento = Deposito.store().elementosPorProducto(producto).get(0);
 		Deposito.store().eliminarElemento(elemento);
-		elemento.agregarEnvoltorio();
-		elemento.agregarCierre();
+		this.getEnvio().agregarCierres(producto.getCierres());
+		this.getEnvio().agregarEnvoltorios(producto.getEnvoltorios());
 		this.agregarElemento(elemento);
 	}
 

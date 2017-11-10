@@ -3,6 +3,9 @@ package modelo.productoElemento;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.EnvoltoriosCierres.Cierre;
+import modelo.EnvoltoriosCierres.Folio;
+
 public class Libro extends Producto {
 
 	// atributos
@@ -30,6 +33,26 @@ public class Libro extends Producto {
 	@Override
 	public boolean fueEscritoPor(String autor) {
 		return this.getAutores().contains(autor);
+	}
+
+	public int perimetroAEnvolver() {
+		return (this.getAlto() * this.getEspesor() * 4) * (this.getAncho() * 2 + this.getEspesor() * 3);
+	}
+	
+	@Override
+	public void agregarEnvoltorio() {
+		int folios = 1 + (int) (this.perimetroAEnvolver() / Folio.getCm2());
+		for (int i = 0; i < folios; i++) {
+			this.getEnvoltorios().add(new Folio());
+		}
+	}
+
+	@Override
+	public void agregarCierres() {
+		int cierres = this.getEnvoltorios().size() * 3;
+		for (int i = 0; i < cierres; i++) {
+			this.getCierres().add(new Cierre());
+		}
 	}
 
 	// setters & getters

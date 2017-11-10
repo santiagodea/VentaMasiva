@@ -3,6 +3,8 @@ package modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.EnvoltoriosCierres.Cierre;
+import modelo.EnvoltoriosCierres.Envoltorio;
 import modelo.productoElemento.Elemento;
 
 public class Envio {
@@ -10,6 +12,8 @@ public class Envio {
 	private Integer nroEnvio;
 	private Pedido pedido;
 	private List<Elemento> elementos = new ArrayList<>();
+	private List<Envoltorio> envoltorios = new ArrayList<>();
+	private List <Cierre> cierres = new ArrayList<>();
 
 	// constructor
 	public Envio(Pedido pedido) {
@@ -22,7 +26,13 @@ public class Envio {
 	public void agregarElemento(Elemento elemento) {
 		this.getElementos().add(elemento);
 	}
-
+	
+	public void agregarEnvoltorios(List<Envoltorio> envoltorios) {
+		this.getEnvoltorios().addAll(envoltorios);
+	}
+	public void agregarCierres(List<Cierre> cierres) {
+		this.getCierres().addAll(cierres);
+	}
 	public Double pesoTotal() {
 		return this.getElementos().stream().map(e -> e.getProducto()).mapToDouble(p -> p.getPeso()).sum();
 	}
@@ -50,5 +60,21 @@ public class Envio {
 
 	public void setElementos(List<Elemento> elementos) {
 		this.elementos = elementos;
+	}
+
+	public List<Envoltorio> getEnvoltorios() {
+		return envoltorios;
+	}
+
+	public void setEnvoltorios(List<Envoltorio> envoltorios) {
+		this.envoltorios = envoltorios;
+	}
+
+	public List <Cierre> getCierres() {
+		return cierres;
+	}
+
+	public void setCierres(List <Cierre> cierres) {
+		this.cierres = cierres;
 	}
 }

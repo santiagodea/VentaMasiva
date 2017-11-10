@@ -27,22 +27,6 @@ public class Botella extends Elemento {
 		return true;
 	}
 
-	@Override
-	public void agregarEnvoltorio() {
-		this.setFilmAlveolars(1);
-
-	}
-
-	@Override
-	public void agregarCierre() {
-		if (this.getVino().getPeso() <= 1) {
-
-		} else {
-			this.setCintas(2);
-		}
-
-	}
-
 	// setters & getters
 	public int getFilmAlveolars() {
 		return filmAlveolars;
