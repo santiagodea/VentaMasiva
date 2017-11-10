@@ -1,19 +1,18 @@
 package modelo.productoElemento;
 
-import modelo.Deposito;
+import modelo.Numerador;
 
 public abstract class Elemento {
 
 	// atributos
 	private Integer nroInventario;
-
+	
+	//constructor
 	public Elemento() {
-		nroInventario = Deposito.numeroDeInventario();
+		nroInventario = Numerador.numeroDeInventario();
 	}
 
-	public Integer getNroInventario() {
-		return nroInventario;
-	}
+	//metodos
 
 	public abstract boolean fueEscritoPor(String autor);
 
@@ -25,5 +24,14 @@ public abstract class Elemento {
 		return (this.getProducto().equals(unProducto));
 	}	
 	public abstract Producto getProducto();
+
+	public abstract void agregarEnvoltorio();
+
+	public abstract void agregarCierre();
+	
+	//getter
+	public Integer getNroInventario() {
+		return nroInventario;
+	}
 
 }

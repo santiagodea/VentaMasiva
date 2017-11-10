@@ -1,11 +1,14 @@
 package modelo.test;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 import modelo.Cepas;
 import modelo.Deposito;
-import modelo.SectorCompuesto;
-import modelo.SectorSimple;
+import modelo.Pedido;
+import modelo.Sectores.SectorCompuesto;
+import modelo.Sectores.SectorSimple;
 import modelo.productoElemento.Botella;
 import modelo.productoElemento.Ejemplar;
 import modelo.productoElemento.Libro;
@@ -90,6 +93,16 @@ public class test1 {
 		System.out.println("cantidad d eelementos en el S1 y S2 despues: ");
 		System.out.println(S1.getElementosTotalesDelSector().size());
 		System.out.println(S2.getElementosTotalesDelSector().size());
+		
+		
+		
+		Pedido unpedido = new Pedido("jose");
+		unpedido.agregarProducto(libro1);
+		unpedido.agregarProducto(vino1);
+		unpedido.crearEnvio();
+		assertEquals(150,unpedido.getEnvio().pesoTotal(),0);	//pesos: 30 + 120
+		
+		
 	}
 
 }

@@ -4,36 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import modelo.Sectores.Sector;
+import modelo.Sectores.SectorSimple;
 import modelo.productoElemento.Elemento;
 import modelo.productoElemento.Libro;
 import modelo.productoElemento.Producto;
 
 public class Deposito {
 
-	// variables estaticas
+	// static
 	private static Deposito store = new Deposito();
-	private static Integer numeradorDeInventario = 0;
-
+	// atributo
 	private List<Sector> sectores = new ArrayList<Sector>();
 
+	// constructor
 	public static Deposito store() {
 		return store;
 	}
 
-	public static Integer numeroDeInventario() {
-		numeradorDeInventario = numeradorDeInventario + 1;
-		return numeradorDeInventario;
-	}
-
 	public Deposito() {
-		this.llenarDatos();
-	}
-
-	private void llenarDatos() {
-		// TODO crear datos para luego consultar!
 
 	}
 
+	//metodos
 	public void agregarSector(Sector sector) {
 		this.getSectores().add(sector);
 	}
@@ -60,9 +53,14 @@ public class Deposito {
 				.collect(Collectors.toList());
 
 	}
-	//muestra una lista con los numeros de inventario de los productos
-	public List<Integer> elemontosPorProductosNros(Libro libro){
-		return this.elementosPorProducto(libro).stream().map(e ->e.getNroInventario()).collect(Collectors.toList());
+
+	public Integer cantElementosParaProducto(Producto producto) {
+		return this.elementosPorProducto(producto).size();
+	}
+
+	// muestra una lista con los numeros de inventario de los productos
+	public List<Integer> elemontosPorProductosNros(Libro libro) {
+		return this.elementosPorProducto(libro).stream().map(e -> e.getNroInventario()).collect(Collectors.toList());
 	}
 
 	// ejer05
@@ -72,45 +70,41 @@ public class Deposito {
 	public Sector sectorDondeEstaElElemento(Integer identificador) {
 		try {
 			return this.sectorConElemento(identificador);
-	}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("no existe ningun sector con un Elemento con el identificador " + identificador);
-		} {	
+		}
+		{
 		}
 		return null;
-		//queda muy raro devolver algo si lo encuentra y sino devolver null... pero tengo q preguntar como deberia ser...	
+		// queda muy raro devolver algo si lo encuentra y sino devolver null... pero
+		// tengo q preguntar como deberia ser...
 	}
-	
-	//ejer06
-	//retirar un elemento de un sector simple. Si no esta, lanzar excepcion.
+
+	// ejer06
+	// retirar un elemento de un sector simple. Si no esta, lanzar excepcion.
 	public void eliminarElemento(Elemento elemento) {
 		if (this.haySectorConElemento(elemento)) {
 			this.sectorConElemento(elemento.getNroInventario()).borrarElemento(elemento);
+		} else {
+			throw new RuntimeException(
+					"el elemento nro" + elemento.getNroInventario() + "no se puede eliminar porque no existe");
 		}
-		else {
-			throw new RuntimeException("el elemento nro" +  elemento.getNroInventario() + "no se puede eliminar porque no existe");
-			}
 	}
-	
+
 	public boolean haySectorConElemento(Elemento elemento) {
-		return this.totalDeSectores().
-				stream().map(s -> s.getElementosTotalesDelSector())
-				.flatMap(l -> l.stream())
-				.collect(Collectors.toList())
-				.contains(elemento);
+		return this.totalDeSectores().stream().map(s -> s.getElementosTotalesDelSector()).flatMap(l -> l.stream())
+				.collect(Collectors.toList()).contains(elemento);
 	}
-	
 
-	
-	
 	public Integer cantSectorConElemento(Integer nroInventario) {
-		return this.totalDeSectores().stream().filter(s -> s.contieneAElementoCon(nroInventario)).collect(Collectors.toList()).size();
-	}	
-	
-	public SectorSimple sectorConElemento(Integer nroInventario) {
-		return (SectorSimple) this.totalDeSectores().stream().filter(s -> s.contieneAElementoCon(nroInventario)).findAny().get();
+		return this.totalDeSectores().stream().filter(s -> s.contieneAElementoCon(nroInventario))
+				.collect(Collectors.toList()).size();
 	}
 
+	public SectorSimple sectorConElemento(Integer nroInventario) {
+		return (SectorSimple) this.totalDeSectores().stream().filter(s -> s.contieneAElementoCon(nroInventario))
+				.findAny().get();
+	}
 
 	public Integer cantDeSectoresConElementoCon(Integer nroInventario) {
 		return this.totalDeSectores().stream().filter(s -> s.contieneAElementoCon(nroInventario))
@@ -118,8 +112,7 @@ public class Deposito {
 	}
 
 	public List<Sector> totalDeSectores() {
-		return this.getSectores().stream().map(s -> s.totalDeSectores())
-				.flatMap(l -> l.stream())
+		return this.getSectores().stream().map(s -> s.totalDeSectores()).flatMap(l -> l.stream())
 				.collect(Collectors.toList());
 	}
 
