@@ -73,11 +73,12 @@ public class Deposito {
 		try {
 			return this.sectorConElemento(identificador);
 		} catch (Exception e) {
+			
 			System.out.println("no existe ningun sector con un Elemento con el identificador " + identificador);
+			return null;
 		}
-		{
-		}
-		return null;
+
+		
 		// queda muy raro devolver algo si lo encuentra y sino devolver null... pero
 		// tengo q preguntar como deberia ser...
 	}
