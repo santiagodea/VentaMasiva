@@ -21,6 +21,10 @@ public class SectorCompuesto extends Sector {
 	public void agregarSector(Sector sector) {
 		this.getSectores().add(sector);
 	}
+	public List<SectorSimple> totalDeSectores() {
+		return this.getSectores().stream().map(s -> s.totalDeSectores()).flatMap(l -> l.stream())
+				.collect(Collectors.toList());
+	}
 
 	@Override
 	public List<Elemento> getElementosTotalesDelSector() {
@@ -53,5 +57,7 @@ public class SectorCompuesto extends Sector {
 	public void setSectores(List<Sector> sectores) {
 		this.sectores = sectores;
 	}
+
+
 
 }

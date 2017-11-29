@@ -30,10 +30,9 @@ public abstract class Sector {
 	// queda raro el casting, mejorar!, no quiero hacerlo en la super clase ya que
 	// no tiene sentido xq se podria borrar un elemento solo
 	// en un Sector Simple
-	public List<Sector> totalDeSectores() {
-		return this.getSectores().stream().map(s -> s.getSectores()).flatMap(l -> l.stream())
-				.collect(Collectors.toList());
-	}
+	public abstract List<SectorSimple> totalDeSectores();
+	
+
 
 	// setter & getter
 	public String getNombre() {

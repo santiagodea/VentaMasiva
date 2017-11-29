@@ -9,6 +9,8 @@ import modelo.productoElemento.Elemento;
 
 public class Envio {
 	// atributos
+	private Cliente cliente;
+	private Estados estado;
 	private Integer nroEnvio;
 	private Pedido pedido;
 	private List<Elemento> elementos = new ArrayList<>();
@@ -20,6 +22,7 @@ public class Envio {
 		nroEnvio = Numerador.numeroDeEnvio();
 		this.setPedido(pedido);
 		this.setNroEnvio(Numerador.numeroDeEnvio());
+		this.setEstado(Estados.NUEVO);
 	}
 
 	// metodos
@@ -34,7 +37,17 @@ public class Envio {
 		this.getCierres().addAll(cierres);
 	}
 	public Double pesoTotal() {
-		return this.getElementos().stream().map(e -> e.getProducto()).mapToDouble(p -> p.getPeso()).sum();
+		return (this.getElementos().stream().map(e -> e.getProducto()).mapToDouble(p -> p.getPeso()).sum()
+				+ this.pesoEnvoltorios()
+				+this.pesoCierres());
+	}
+
+	private double pesoCierres() {
+		return this.getCierres().stream().mapToDouble(p -> p.getPeso()).sum();
+	}
+
+	private double pesoEnvoltorios() {
+		return this.getEnvoltorios().stream().mapToDouble(p -> p.getPeso()).sum();
 	}
 
 	// getters & setters
@@ -77,4 +90,21 @@ public class Envio {
 	public void setCierres(List <Cierre> cierres) {
 		this.cierres = cierres;
 	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Estados getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estados estado) {
+		this.estado = estado;
+	}
+	
 }

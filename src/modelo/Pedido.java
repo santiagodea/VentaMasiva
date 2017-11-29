@@ -10,13 +10,13 @@ import modelo.productoElemento.Producto;
 
 public class Pedido {
 	//atributos
-	private String cliente;
+	private Cliente cliente;
 	private LocalDate fechaDelPedido;
 	private Envio envio;
 	private List<Producto> productos = new ArrayList<>();
 	
 	//constructor
-	public Pedido(String cliente) {
+	public Pedido(Cliente cliente) {
 		this.setCliente(cliente);
 		this.setFechaDelPedido(LocalDate.now());
 	}
@@ -27,9 +27,10 @@ public class Pedido {
 		if (this.puedeCrearEnvio()) {
 			this.agregarElementos();
 		} else {
+			this.getEnvio().setEstado(Estados.PENDIENTE);
 			throw new RuntimeException("no se puede crear el envio porque falta algun producto");
 		}
-
+		this.getEnvio().setEstado(Estados.EN_TRANSITO);
 		return this.getEnvio();
 
 	}
@@ -40,10 +41,10 @@ public class Pedido {
 	}
 
 	private void agregarElementos() {
-		this.getProductos().forEach(p -> this.agregarUnelemento(p));
+		this.getProductos().forEach(p -> this.agregarUnElemento(p));
 	}
 
-	private void agregarUnelemento(Producto producto) {
+	private void agregarUnElemento(Producto producto) {
 		Elemento elemento = Deposito.store().elementosPorProducto(producto).get(0);
 		Deposito.store().eliminarElemento(elemento);
 		this.getEnvio().agregarCierres(producto.getCierres());
@@ -61,11 +62,11 @@ public class Pedido {
 	}
 	
 	//setters & getters
-	public String getCliente() {
+	public Cliente getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(String cliente) {
+	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 

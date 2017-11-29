@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import modelo.Cepas;
+import modelo.Cliente;
 import modelo.Deposito;
 import modelo.Pedido;
 import modelo.Sectores.SectorCompuesto;
@@ -38,10 +39,9 @@ public class test1 {
 		
 
 		SCA.agregarSector(SCB);
-		SCA.agregarSector(SCC);
-		SCB.agregarSector(S1);
-		SCB.agregarSector(S2);
-		SCC.agregarSector(S3);
+		SCB.agregarSector(SCC);
+		SCC.agregarSector(S1);
+		SCC.agregarSector(S2);
 
 		
 		vino1.agregarCepa(Cepas.MALBEC);
@@ -58,72 +58,68 @@ public class test1 {
 		// ejer 01
 		S1.agregarBotella(botella1);
 		S1.agregarBotella(botella2);
-		System.out.println("elemento agregado con nro de inventario: ");
-		System.out.println(botella1.getNroInventario());
+		assertEquals(1, botella1.getNroInventario(),0);
+		assertEquals(2, botella2.getNroInventario(),0);
 		// ejer 02
 		S1.agregarEjemplar(ejemplar1);
-		System.out.println("elemento agregado con nro de inventario: ");
-		System.out.println(ejemplar1.getNroInventario());
+		
+		assertEquals(3, ejemplar1.getNroInventario(),0);
 		S1.agregarEjemplar(ejemplar2);
-		System.out.println("elemento agregado con nro de inventario: ");
-		System.out.println(ejemplar2.getNroInventario());
+		assertEquals(4, ejemplar2.getNroInventario(),0);
+		
 		// ejer 03
-		System.out.println("cantidad de libros para el autor juan: ");
-		System.out.println(S1.librosconAutor("juan").size());
-		System.out.println("libros para el autor juan: ");
-		System.out.println(Deposito.store().librosPorAutorTitulos("juan"));
+
+		assertEquals(2, S1.librosconAutor("juan").size(),0);
+		assertEquals(1, Deposito.store().librosPorAutorTitulos("juan").size(),0);
 
 		// ejer 04
-		System.out.println("cantidad de elementos en el deposito para el " + libro1.getTitulo());
-		System.out.println(Deposito.store().elementosPorProducto(libro1).size());
-		System.out.println("elementos en el deposito para el " + libro1.getTitulo());
-		System.out.println(Deposito.store().elemontosPorProductosNros(libro1));
+		assertEquals(2, Deposito.store().elementosPorProducto(libro1).size(),0);
 
-		// ejer 05
-		System.out.println("sector donde se encuentra el elemento conb id 1");
-		System.out.println(Deposito.store().sectorDondeEstaElElemento(1).getNombre());
+		//ejer 05
+		assertEquals(S1, Deposito.store().sectorDondeEstaElElemento(1));
+		
 		// ejer 06
-
-		System.out.println("eliminar un elemento y muestra cuantos queda:");
+		assertEquals(2, Deposito.store().elementosPorProducto(libro1).size(),0);
 		Deposito.store().eliminarElemento(ejemplar2);
-		System.out.println(Deposito.store().elementosPorProducto(libro1).size());
-
+		assertEquals(1, Deposito.store().elementosPorProducto(libro1).size(),0);
+		
+		
+//		// ejer 07
 		
 		S2.agregarBotella(botella1);
-		// ejer 07
-		System.out.println("cantidad d eelementos en el S1 y S2 antes: ");
-		System.out.println(S1.getElementosTotalesDelSector().size());
-		System.out.println(S2.getElementosTotalesDelSector().size());
+		S2.agregarBotella(botella1);
+		
+		assertEquals(3,S1.getElementosTotalesDelSector().size(),0);
+		assertEquals(2,S2.getElementosTotalesDelSector().size(),0);
 		
 		S2.vaciarSectorYPasarAOtro(S1);
 		
-		System.out.println("cantidad d eelementos en el S1 y S2 despues: ");
-		System.out.println(S1.getElementosTotalesDelSector().size());
-		System.out.println(S2.getElementosTotalesDelSector().size());
+		assertEquals(5,S1.getElementosTotalesDelSector().size(),0);
+		assertEquals(0,S2.getElementosTotalesDelSector().size(),0);
 		
 		
-		
-		Pedido unpedido = new Pedido("jose");
+		Cliente cliente1 = new Cliente("santiago","soler 209", "gral belgrano");
+		Pedido unpedido = new Pedido(cliente1);
 		unpedido.agregarProducto(libro1);
 		unpedido.agregarProducto(vino1);
 		unpedido.crearEnvio();
-		assertEquals(150,unpedido.getEnvio().pesoTotal(),0);	//pesos: 30 + 120
+		assertEquals(310,unpedido.getEnvio().pesoTotal(),0);	//pesos: 30 + 120 + (peso de cierres y envoltorios)
 		Deposito.store().agregarPedido(unpedido);
-		System.out.println("cantidad de envoltorios para Envio para el pedido");
-		System.out.println(unpedido.getEnvio().getEnvoltorios().size());
-		System.out.println("cantidad de cierres para el envio del pedido");
-		System.out.println(unpedido.getEnvio().getCierres().size());
+		
+		assertEquals(2,unpedido.getEnvio().getEnvoltorios().size(),0);
+		
+		assertEquals(5,unpedido.getEnvio().getCierres().size(),0);
 		
 
 	}
 	
 	@Test (expected = RuntimeException.class)
-	public void testaddduplicateSocialWork() {
+	public void test2() {
 		SCA.agregarSector(SCB);
-		SCA.agregarSector(SCC);
-		SCB.agregarSector(S1);
-		SCB.agregarSector(S2);
-		SCC.agregarSector(S3);
+		SCB.agregarSector(SCC);
+		SCC.agregarSector(S1);
+		SCC.agregarSector(S2);
+		
 		vino1.agregarCepa(Cepas.MALBEC);
 		libro1.agregarAutor("juan");
 		libro1.agregarAutor("pedro");
@@ -131,11 +127,19 @@ public class test1 {
 		S1.agregarBotella(botella2);
 		S1.agregarEjemplar(ejemplar1);
 		S1.agregarEjemplar(ejemplar2);
-
+		Cliente cliente1 = new Cliente("santiago","soler 209", "gral belgrano");
+		Cliente cliente2 = new Cliente("jose","dorrego 209", "gral belgrano");
+		
 		Deposito.store().agregarSector(SCA);
-		Pedido pedidodos = new Pedido("juan");
+		Pedido pedidodos = new Pedido(cliente1);
 		pedidodos.agregarProducto(new Vino(10, 20, 30, "mendoza"));
+		//deberia tirar excepcion ya que no hay botellas para el producto que se solicita en el pedido.
 		pedidodos.crearEnvio();
+		
+		
+		//TESTEAR EL PUNTO 3 saber, DADO UN CLIENTE VER SI TIENE PERIODOS EN TRANSITO
+
+		
 		
 	}
 }

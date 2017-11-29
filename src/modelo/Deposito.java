@@ -119,6 +119,8 @@ public class Deposito {
 				.collect(Collectors.toList());
 	}
 	
+
+	
 	public void agregarPedido(Pedido pedido) {
 		this.getPedidos().add(pedido);
 	}

@@ -33,6 +33,11 @@ public class SectorSimple extends Sector {
 		return this.getEjemplares().stream().filter(e -> e.fueEscritoPor(autor)).map(e -> e.getLibro())
 				.collect(Collectors.toList());
 	}
+	public List<SectorSimple> totalDeSectores() {
+		List<SectorSimple> ss = new ArrayList<SectorSimple>();
+		ss.add(this);
+		return ss;
+	}
 
 	@Override
 	public List<Elemento> getElementosTotalesDelSector() {
